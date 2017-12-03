@@ -135,6 +135,7 @@
             this.bDecrypt.TabIndex = 9;
             this.bDecrypt.Text = "Deszyfruj";
             this.bDecrypt.UseVisualStyleBackColor = false;
+            this.bDecrypt.Click += new System.EventHandler(this.bDecrypt_Click);
             // 
             // bInfo
             // 
