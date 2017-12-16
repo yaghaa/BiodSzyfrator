@@ -70,10 +70,16 @@ namespace BiodSzyfrator
 
         private string Decrypt(string file)
         {
+            // 1 - Podział na bloki
             string[] blocks = GetBlocks(file);
+
+            // 2 - Przestawienie
             string[] movedBlocks = ClearDisplacements(blocks);
-            string[] unsubstitutedBlocks = UnSubstitute(movedBlocks);            
-            return String.Join("", movedBlocks);
+
+            // 3 - Podstawienie
+            string[] unsubstitutedBlocks = UnSubstitute(movedBlocks);
+            
+            return String.Join("", unsubstitutedBlocks);
         }
 
         private string[] ClearDisplacements(string[] blocks)
@@ -151,10 +157,13 @@ namespace BiodSzyfrator
 
         private string Encrypt(string file)
         {
+            // 1 - Podział na bloki
             string[] blocks = GetBlocks(file);
 
+            // 2 - Podstawienie
             string[] substitutedBlocks = Substitute(blocks);
 
+            // 3 - Przestawienie
             string[] movedBlocks = Displacement(substitutedBlocks);
 
             return String.Join("", movedBlocks);
@@ -267,12 +276,12 @@ namespace BiodSzyfrator
         #region FileOperations
         private string ReadFile()
         {
-            return String.Join(((char)13).ToString(), System.IO.File.ReadAllLines(tbSourceFile.Text, Encoding.GetEncoding("ISO-8859-1")));
+            return String.Join(((char)13).ToString(), System.IO.File.ReadAllLines(tbSourceFile.Text, Encoding.GetEncoding("iso-8859-1")));
         }
 
         private void SaveFile(string text)
         {
-            System.IO.File.WriteAllText(tbOutcome.Text, text, Encoding.GetEncoding("ISO-8859-1"));
+            System.IO.File.WriteAllText(tbOutcome.Text, text, Encoding.GetEncoding("iso-8859-1"));
         }
 
         private void bChooseBaseFile_Click(object sender, EventArgs e)
