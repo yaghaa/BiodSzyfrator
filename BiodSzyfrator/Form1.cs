@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,9 @@ namespace BiodSzyfrator
                 ClearKey();
                 var file = ReadFile();
                 var result = Encrypt(file);
-                SaveFile(PrepareText(result));
+                SaveFile(PrepareText(result), true);
+                DeleteSourceFile();
+                ClearPaths();
             }
         }
 
@@ -60,7 +63,9 @@ namespace BiodSzyfrator
                 ClearKey();
                 var file = ReadFile();
                 var result = Decrypt(file);
-                SaveFile(PrepareText(result));
+                SaveFile(PrepareText(result), false);
+                DeleteSourceFile();
+                ClearPaths();
             }
         }
 
@@ -183,21 +188,6 @@ namespace BiodSzyfrator
         {
             var displacementTable = new char[5, 5];
 
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    for (int j = 0; j < 5; j++)
-            //    {
-            //        if (PyramidFieldReserved(i,j) == false)
-            //        {
-            //            displacementTable[i][j] =
-            //        }
-            //        else
-            //        {
-            //            displacementTable[i][j] = null;
-            //        }
-            //    }
-            //}
-
             displacementTable[0, 4] = substitutedBlock[0];
             displacementTable[1, 2] = substitutedBlock[1];
             displacementTable[1, 3] = substitutedBlock[2];
@@ -279,9 +269,27 @@ namespace BiodSzyfrator
             return String.Join(((char)13).ToString(), System.IO.File.ReadAllLines(tbSourceFile.Text, Encoding.GetEncoding("iso-8859-1")));
         }
 
-        private void SaveFile(string text)
+        private void SaveFile(string text, bool isEncrypting)
         {
-            System.IO.File.WriteAllText(tbOutcome.Text, text, Encoding.GetEncoding("iso-8859-1"));
+            System.IO.File.WriteAllText(PrepareFile(isEncrypting), text, Encoding.GetEncoding("iso-8859-1"));
+        }
+
+        private string PrepareFile(bool isEncrypting)
+        {
+            var path = "";
+            if(string.IsNullOrEmpty(tbOutcome.Text))
+            {
+                var splitedPath = tbSourceFile.Text.Split('\\');
+                splitedPath[splitedPath.Length - 1] = "";
+                path = String.Join("\\",splitedPath);
+            }
+            else
+            {
+                path = tbOutcome.Text;
+            }
+
+            path += isEncrypting?"\\outcome_coded.txt": "\\outcome_encoded.txt";
+            return path;
         }
 
         private void bChooseBaseFile_Click(object sender, EventArgs e)
@@ -296,12 +304,22 @@ namespace BiodSzyfrator
 
         private void bOutput_Click(object sender, EventArgs e)
         {
-            openFileDialog2.FileName = "test";
             DialogResult result = openFileDialog2.ShowDialog();
             if (result == DialogResult.OK)
             {
-                tbOutcome.Text = openFileDialog2.FileName.ToString();
+                tbOutcome.Text = openFileDialog2.SelectedPath.ToString();
             }
+        }
+
+        private void DeleteSourceFile()
+        {
+            File.Delete(tbSourceFile.Text);
+        }
+
+        private void ClearPaths()
+        {
+            tbSourceFile.Text = "";
+            tbOutcome.Text = "";
         }
 
         #endregion

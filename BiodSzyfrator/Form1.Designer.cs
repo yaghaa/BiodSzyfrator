@@ -40,7 +40,7 @@
             this.bDecrypt = new System.Windows.Forms.Button();
             this.bInfo = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog2 = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // tbSourceFile
@@ -151,10 +151,6 @@
             // 
             this.openFileDialog1.FileName = "ofdInFIle";
             // 
-            // openFileDialog2
-            // 
-            this.openFileDialog2.FileName = "ofdOutFile";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -193,7 +189,7 @@
     private System.Windows.Forms.Button bDecrypt;
     private System.Windows.Forms.Button bInfo;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.OpenFileDialog openFileDialog2;
+        private System.Windows.Forms.FolderBrowserDialog openFileDialog2;
     }
 }
 
